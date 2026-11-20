@@ -1,0 +1,16 @@
+# Credenciales: nunca subir
+.env
+
+# Datos reales de Reciel: nunca subir
+datos/
+*.xlsx
+*.csv
+!transformacion/equivalencias_categorias.csv
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Power BI (el .pbix puede contener datos; súbanlo solo si lo acuerdan)
+*.pbix
