@@ -12,7 +12,9 @@ DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_NAME = os.getenv("DB_NAME", "dm_comercial")
 
 HUBSPOT_TOKEN = os.getenv("HUBSPOT_TOKEN")
-NUBEFACT_EXCEL = os.getenv("NUBEFACT_EXCEL")
+NUBEFACT_RUTA = os.getenv("NUBEFACT_RUTA")
+NUBEFACT_TOKEN = os.getenv("NUBEFACT_TOKEN")
+NUBEFACT_SERIES = os.getenv("NUBEFACT_SERIES", "F001")
 GOOGLE_ADS_CSV = os.getenv("GOOGLE_ADS_CSV")
 
 

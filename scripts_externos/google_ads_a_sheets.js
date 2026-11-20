@@ -5,7 +5,7 @@
  * 2. Para la carga inicial, cambien FECHA_INICIO a la fecha de la primera campaña.
  * 3. Luego prográmenlo "Diariamente".
  */
-var URL_HOJA = 'PEGAR_AQUI_LA_URL_DE_LA_HOJA';
+var URL_HOJA = 'https://docs.google.com/spreadsheets/d/1OJ38uWoe2i4XGU5VsIV7m7Xd0RJSPxQWskFDqluGZCA/edit?gid=0#gid=0';
 var FECHA_INICIO = '2025-01-01';   // AAAA-MM-DD
 
 function main() {

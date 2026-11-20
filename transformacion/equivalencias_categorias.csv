@@ -1,0 +1,29 @@
+palabra_clave,categoria,tipo_proteccion
+POLO,Uniformes,Prenda superior
+CAMISA,Uniformes,Prenda superior
+CAMISAS,Uniformes,Prenda superior
+CASACA,Uniformes,Prenda superior
+CHOMPA,Uniformes,Prenda superior
+PANTALON,Uniformes,Prenda inferior
+SHORT,Uniformes,Prenda inferior
+MAMELUCO,Uniformes,Overol
+OVEROL,Uniformes,Overol
+MANDIL,Uniformes,Prenda superior
+GORRO,Uniformes,Accesorio
+GORRA,Uniformes,Accesorio
+CHALECO,EPP,Alta visibilidad
+CASCO,EPP,Protección de cabeza
+GUANTE,EPP,Protección de manos
+GUANTES,EPP,Protección de manos
+LENTE,EPP,Protección visual
+LENTES,EPP,Protección visual
+MASCARILLA,EPP,Protección respiratoria
+RESPIRADOR,EPP,Protección respiratoria
+TAPON,EPP,Protección auditiva
+OREJERA,EPP,Protección auditiva
+ARNES,EPP,Trabajo en altura
+BOTA,Calzado de seguridad,Calzado
+BOTAS,Calzado de seguridad,Calzado
+BOTIN,Calzado de seguridad,Calzado
+BOTINES,Calzado de seguridad,Calzado
+ZAPATO,Calzado de seguridad,Calzado

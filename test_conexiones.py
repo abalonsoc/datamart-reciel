@@ -32,20 +32,34 @@ else:
     )
     resultado("HubSpot", r.status_code == 200, f"(HTTP {r.status_code})")
 
-# 3. Excel de Nubefact
-ruta = config.NUBEFACT_EXCEL
-if ruta and os.path.exists(ruta):
-    df = pd.read_excel(ruta)
-    resultado("Excel Nubefact", True, f"({len(df)} filas; columnas: {list(df.columns)[:6]}...)")
-else:
-    resultado("Excel Nubefact", False, f"-> no se encontró {ruta}")
+# 3. Facturas SUNAT en PDF
+from pathlib import Path
+pdfs = list(Path("datos/facturas_pdf").glob("*.pdf"))
+resultado("Facturas SUNAT (PDF)", len(pdfs) > 0, f"({len(pdfs)} archivos en datos/facturas_pdf)")
 
-# 4. CSV de Google Ads
+# 4. API de Nubefact (consulta el comprobante 1 de la serie solo para probar el acceso)
+if not (config.NUBEFACT_RUTA and config.NUBEFACT_TOKEN):
+    resultado("Nubefact API", False, "-> faltan NUBEFACT_RUTA o NUBEFACT_TOKEN en .env")
+else:
+    import json as _json
+    serie = config.NUBEFACT_SERIES.split(",")[0].strip()
+    r = requests.post(
+        config.NUBEFACT_RUTA,
+        headers={"Authorization": f'Token token="{config.NUBEFACT_TOKEN}"', "Content-Type": "application/json"},
+        data=_json.dumps({"operacion": "consultar_comprobante", "tipo_de_comprobante": 1, "serie": serie, "numero": 1}),
+        timeout=30,
+    )
+    datos = r.json()
+    # Si responde que el documento no existe, el acceso igual funciona (aún no hay facturas).
+    acceso_ok = r.status_code == 200 or "no existe" in str(datos.get("errors", "")).lower()
+    resultado("Nubefact API", acceso_ok, f"(HTTP {r.status_code}: {datos.get('errors', 'OK')})")
+
+# 5. CSV de Google Ads (opcional por ahora: solo alimenta Hecho_Campanas y el ROAS)
 ruta = config.GOOGLE_ADS_CSV
 if ruta and os.path.exists(ruta):
     df = pd.read_csv(ruta)
-    resultado("CSV Google Ads", True, f"({len(df)} filas)")
+    print(f"[OK ] CSV Google Ads ({len(df)} filas)")
 else:
-    resultado("CSV Google Ads", False, f"-> no se encontró {ruta}")
+    print(f"[PENDIENTE] CSV Google Ads -> se hará después ({ruta})")
 
 print("\nM0 COMPLETO" if ok else "\nFaltan puntos por resolver")
