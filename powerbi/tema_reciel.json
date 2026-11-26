@@ -1,0 +1,27 @@
+{
+  "name": "Reciel Data Mart",
+  "dataColors": ["#1F4E79", "#2E75B6", "#5B9BD5", "#9DC3E6", "#C55A11", "#F4B183", "#548235", "#A9D18E", "#7F7F7F", "#BFBFBF"],
+  "background": "#FFFFFF",
+  "foreground": "#262626",
+  "tableAccent": "#1F4E79",
+  "good": "#548235",
+  "neutral": "#BF9000",
+  "bad": "#C00000",
+  "textClasses": {
+    "title": { "fontFace": "Segoe UI Semibold", "fontSize": 13, "color": "#1F4E79" },
+    "header": { "fontFace": "Segoe UI Semibold", "fontSize": 11, "color": "#262626" },
+    "label": { "fontFace": "Segoe UI", "fontSize": 10, "color": "#404040" },
+    "callout": { "fontFace": "Segoe UI Semibold", "fontSize": 26, "color": "#1F4E79" }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "border": [{ "show": true, "color": { "solid": { "color": "#E1E5EA" } }, "radius": 6 }],
+        "background": [{ "show": true, "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 0 }]
+      }
+    },
+    "page": {
+      "*": { "background": [{ "color": { "solid": { "color": "#F3F5F8" } }, "transparency": 0 }] }
+    }
+  }
+}

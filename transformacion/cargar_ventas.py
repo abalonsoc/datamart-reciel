@@ -58,6 +58,10 @@ def clasificar(descripcion: str, reglas: pd.DataFrame) -> tuple[str, str]:
 def leer_staging(engine) -> tuple[pd.DataFrame, pd.DataFrame]:
     cab = pd.read_sql("SELECT * FROM stg_facturas", engine, dtype={"numero": str, "ruc_cliente": str, "orden_compra": str})
     det = pd.read_sql("SELECT * FROM stg_facturas_items", engine, dtype={"numero": str})
+    # Al leer como texto, los vacíos llegan como "None"/"nan": se vuelven nulos de verdad
+    vacios = {"None": None, "nan": None, "": None}
+    cab["orden_compra"] = cab["orden_compra"].replace(vacios)
+    det["talla"] = det["talla"].replace(vacios)
     return cab, det
 
 
@@ -88,7 +92,8 @@ def cargar_dim_producto(con, det: pd.DataFrame) -> dict:
         con.execute(text("INSERT INTO dim_producto (SKU_Producto, Descripcion, Talla, Categoria, Tipo_Proteccion) "
                          "VALUES (:sku, :desc, :talla, :cat, :tipo)"),
                     {"sku": p["sku"], "desc": normalizar_descripcion(p["descripcion"]),
-                     "talla": p["talla"] if pd.notna(p["talla"]) else None, "cat": categoria, "tipo": tipo})
+                     "talla": p["talla"] if pd.notna(p["talla"]) else "ÚNICA", "cat": categoria, "tipo": tipo})
+    con.execute(text("UPDATE dim_producto SET Talla = 'ÚNICA' WHERE Talla IS NULL OR Talla = ''"))
     return {r[1]: r[0] for r in con.execute(text("SELECT SK_Producto, SKU_Producto FROM dim_producto"))}
 
 
