@@ -6,6 +6,7 @@ Ejecuta todo el proceso en orden:
     2. Extracción de HubSpot (empresas, deals, vendedores) -> staging
     3. Carga de dimensiones y hecho_ventas (incluye la validación contra las facturas)
     4. Sector del cliente y vendedor de cada venta desde HubSpot
+    5. Campañas de Google Ads -> dim_campana y hecho_campanas
 
 Si un paso falla, se detiene, deja el error en etl_log y en datos/logs/,
 y termina con código 1 para que el Programador de tareas lo marque como fallido.
@@ -71,12 +72,24 @@ def paso_enriquecer_hubspot() -> None:
     enriquecer_hubspot.main()
 
 
+def paso_extraer_google_ads() -> None:
+    from extraccion import google_ads
+    google_ads.main()
+
+
+def paso_cargar_campanas() -> None:
+    from transformacion import cargar_campanas
+    cargar_campanas.main()
+
+
 # (nombre, función, crítico). Si un paso no crítico falla, se avisa y el ETL continúa.
 PASOS = [
     ("Extracción de facturas", paso_extraer_facturas, True),
     ("Extracción de HubSpot", paso_extraer_hubspot, False),
     ("Carga de dimensiones y hecho_ventas", paso_cargar_ventas, True),
     ("Sector y vendedor desde HubSpot", paso_enriquecer_hubspot, False),
+    ("Extracción de Google Ads", paso_extraer_google_ads, False),
+    ("Carga de campañas (Google Ads)", paso_cargar_campanas, False),
 ]
 
 
