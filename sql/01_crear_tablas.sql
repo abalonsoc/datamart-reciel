@@ -16,6 +16,7 @@ CREATE TABLE Dim_Cliente (
   SK_Cliente INT AUTO_INCREMENT PRIMARY KEY,
   RUC VARCHAR(11) NOT NULL UNIQUE,
   Razon_Social VARCHAR(255),
+  Nombre_Comercial VARCHAR(255),
   Sector_Economico VARCHAR(100),
   Origen_Datos VARCHAR(50)
 );

@@ -1,19 +1,19 @@
 # Pendientes del proyecto Data Mart Reciel
 
-Última actualización: 24/11/2026
+Última actualización: 27/11/2026 (informe corregido)
 
 ## Data Mart (implementación)
 
 | Módulo | Estado | Qué falta |
 |---|---|---|
 | M0 Entorno y accesos | Hecho | Solo Google Ads (ver M4) |
-| M1 Base de datos | Hecho | — |
+| M1 Base de datos | Hecho | — (`Nombre_Comercial` agregado a `dim_cliente` el 27/11) |
 | M2 Facturas (SUNAT PDF + Nubefact API) | Hecho | Cargar más facturas (ver abajo) |
-| M3 HubSpot | En curso | Sector de clientes, vendedores y vendedor por venta |
+| M3 HubSpot | Código listo | En HubSpot: completar el Sector de las empresas y crear Estudio Grau (RUC 20101093027) con su negocio `Factura E001-509` |
 | M4 Google Ads | Pendiente | Autorizar el script en incógnito, CSV, extractor de `hecho_campanas`, ROAS y atribución |
 | M5–M6 Dimensiones y hecho_ventas | Hecho | — |
-| M7 Carga automática diaria | Hecho | Programar la tarea en Windows y tomar capturas |
-| M8 Dashboard | Primera versión | Formato S/ y %, unidades "Ninguno", filtros, 4 páginas, guardar `powerbi/dashboard_reciel.pbix` |
+| M7 Carga automática diaria | Código listo | Programar la tarea en Windows con `ejecutar_etl.bat` y tomar capturas |
+| M8 Dashboard | Hecho | Páginas Resumen, Clientes y Productos listas. Falta: guardar el archivo en `powerbi/dashboard_reciel.pbix`. La página Marketing se agrega con M4/M9. Sin análisis por vendedor (un solo encargado de ventas) |
 | M9 Cotizaciones web y OC | Pendiente | Extraer `leads`/`lead_items` del MySQL web y la hoja de OC; tasa de conversión y embudo |
 
 ### Datos
@@ -30,11 +30,9 @@
 - [ ] ODS 8 (metas 8.2 y 8.8): la guía lo exige.
 
 ### Actualizaciones por la implementación
-- [ ] Cambiar "Nubefact" por "SUNAT SOL (ventas históricas) y Nubefact (ventas nuevas)" en introducción, 1.6, 1.8, 2.3.1, 2.3.3, 2.4.2 y 2.5.
-- [ ] Diagrama del esquema estrella (2.4): agregar `Talla`, `Dia`, `Origen_Factura`, `Linea_Factura`.
-- [ ] Ticket promedio por factura, no por OC (1.5 y pregunta 3).
-- [ ] Alcance (1.7): ventas implementadas; Google Ads, cotizaciones y OC en segunda fase.
-- [ ] Pasar la sección 2.5 de futuro a pasado.
+- [x] Coherencia del informe con lo implementado (27/11/2026): fuentes SUNAT SOL + Nubefact, KPIs por factura, fases 1 y 2 en 1.7, modelo 2.3.5/2.4, ETL 2.5 en pasado, numeración.
+- [ ] Actualizar el diagrama del esquema estrella en dbdiagram (`Talla`, `Dia`, `Origen_Factura`, `Linea_Factura`).
+- [ ] No mencionar en el informe que HubSpot no se usaba antes del proyecto.
 
 ### Formato
 - [ ] Insertar las 5 figuras (antecedentes, silos, Hefesto, modelo conceptual, ETL) y capturas del dashboard, con "Figura N", título y fuente.

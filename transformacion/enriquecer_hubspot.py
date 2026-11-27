@@ -3,7 +3,9 @@ M3 - Enriquece el Data Mart con los datos de HubSpot.
 
 Debe correr DESPUÉS de cargar_ventas (que recarga hecho_ventas con el vendedor en 0):
     1. dim_vendedor: un registro por usuario propietario de HubSpot.
-    2. dim_cliente: completa el sector económico (industria de la empresa en HubSpot).
+    2. dim_cliente: completa el nombre comercial (nombre de la empresa en HubSpot)
+       y el sector económico (industria de la empresa en HubSpot). Si el cliente
+       no está en HubSpot, el nombre comercial toma la razón social de la factura.
     3. hecho_ventas: asigna el vendedor de cada factura. Usa el dueño del negocio
        ganado de esa empresa con fecha de cierre más cercana (hasta 90 días antes o
        después de la factura); si no hay negocio, el dueño de la empresa.
@@ -40,8 +42,23 @@ def tabla_existe(con, nombre: str) -> bool:
         return False
 
 
+def asegurar_nombre_comercial(engine) -> None:
+    """Agrega la columna Nombre_Comercial a dim_cliente si la base se creó antes de que existiera."""
+    with engine.begin() as con:
+        try:
+            con.execute(text("SELECT Nombre_Comercial FROM dim_cliente LIMIT 1"))
+            return
+        except Exception:
+            pass
+    despues = " AFTER Razon_Social" if engine.dialect.name == "mysql" else ""
+    with engine.begin() as con:
+        con.execute(text(f"ALTER TABLE dim_cliente ADD COLUMN Nombre_Comercial VARCHAR(255){despues}"))
+    print("Columna Nombre_Comercial agregada a dim_cliente")
+
+
 def main() -> None:
     engine = config.get_engine()
+    asegurar_nombre_comercial(engine)
     with engine.begin() as con:
         if not tabla_existe(con, "stg_hubspot_empresas"):
             raise SystemExit("No hay datos de HubSpot: primero corre python -m extraccion.hubspot")
@@ -72,11 +89,18 @@ def main() -> None:
         clientes.loc[sin_ruc, "id_empresa"] = clientes.loc[sin_ruc, "Razon_Social"].map(nombre_clave).map(por_nombre)
 
         info_empresa = empresas.set_index("id_empresa")
-        for _, c in clientes.dropna(subset=["id_empresa"]).iterrows():
-            sector = info_empresa.at[c["id_empresa"], "industria"]
-            if pd.notna(sector) and sector:
-                con.execute(text("UPDATE dim_cliente SET Sector_Economico=:s WHERE SK_Cliente=:k"),
-                            {"s": sector, "k": int(c["SK_Cliente"])})
+        for _, c in clientes.iterrows():
+            nombre = c["Razon_Social"]
+            if pd.notna(c["id_empresa"]):
+                nombre_hs = info_empresa.at[c["id_empresa"], "nombre"]
+                if pd.notna(nombre_hs) and str(nombre_hs).strip():
+                    nombre = str(nombre_hs).strip()
+                sector = info_empresa.at[c["id_empresa"], "industria"]
+                if pd.notna(sector) and sector:
+                    con.execute(text("UPDATE dim_cliente SET Sector_Economico=:s WHERE SK_Cliente=:k"),
+                                {"s": sector, "k": int(c["SK_Cliente"])})
+            con.execute(text("UPDATE dim_cliente SET Nombre_Comercial=:n WHERE SK_Cliente=:k"),
+                        {"n": nombre, "k": int(c["SK_Cliente"])})
 
         # 3. Vendedor de cada factura
         facturas = pd.read_sql(
