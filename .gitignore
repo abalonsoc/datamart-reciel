@@ -14,3 +14,6 @@ __pycache__/
 
 # Power BI (el .pbix puede contener datos; súbanlo solo si lo acuerdan)
 *.pbix
+
+# Scripts de un solo uso (no forman parte del Data Mart)
+temporal/

@@ -9,11 +9,11 @@
 | M0 Entorno y accesos | Hecho | Solo Google Ads (ver M4) |
 | M1 Base de datos | Hecho | — (`Nombre_Comercial` agregado a `dim_cliente` el 27/11) |
 | M2 Facturas (SUNAT PDF + Nubefact API) | Hecho | Cargar más facturas (ver abajo) |
-| M3 HubSpot | Código listo | En HubSpot: completar el Sector de las empresas y crear Estudio Grau (RUC 20101093027) con su negocio `Factura E001-509` |
+| M3 HubSpot | Hecho | Sector y nombre comercial cargados en HubSpot; CMS Grau (Estudio Grau) y su negocio creados (27/11). Quitar los permisos de escritura de la app privada |
 | M4 Google Ads | Pendiente | Autorizar el script en incógnito, CSV, extractor de `hecho_campanas`, ROAS y atribución |
 | M5–M6 Dimensiones y hecho_ventas | Hecho | — |
 | M7 Carga automática diaria | Código listo | Programar la tarea en Windows con `ejecutar_etl.bat` y tomar capturas |
-| M8 Dashboard | Hecho | Páginas Resumen, Clientes y Productos listas. Falta: guardar el archivo en `powerbi/dashboard_reciel.pbix`. La página Marketing se agrega con M4/M9. Sin análisis por vendedor (un solo encargado de ventas) |
+| M8 Dashboard | Hecho | Guardado en `powerbi/dashboard-reciel.pbix`. Consultas leen MySQL con SQL directo (evita la referencia cíclica). La página Marketing se agrega con M4/M9 |
 | M9 Cotizaciones web y OC | Pendiente | Extraer `leads`/`lead_items` del MySQL web y la hoja de OC; tasa de conversión y embudo |
 
 ### Datos
